@@ -2,6 +2,7 @@ use actix_web::{middleware,get, post, web, App, HttpResponse, HttpServer, Respon
 use serde::{Serialize, Deserialize};
 use sodiumoxide::crypto::pwhash::argon2id13;
 use jsonwebtoken::{ encode, Algorithm,  EncodingKey, Header};
+use actix_cors::Cors;
 
 use std::sync::Mutex;
 use std::{fmt};
@@ -87,7 +88,7 @@ async fn post_register(state: web::Data<AppState>, data: web::Json<ReqisterReque
     let newaccount = Account {
         name: data.name.clone(),
         email: data.email.clone(),
-        password: hashedpasswd.clone()
+        password: hashedpasswd
     };
 
     accounts.push(newaccount.clone());
@@ -115,17 +116,22 @@ async fn main() -> std::io::Result<()> {
 
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
-
-
     let inital_state = web::Data::new(
         AppState {
             accounts: Mutex::new(Vec::new()),
         }
     );
+
     HttpServer::new(move || {
+        let cors = Cors::default()
+            .allow_any_origin()
+            .allow_any_header()
+            .allow_any_method();
+
         App::new()
             .app_data(inital_state.clone())
             .wrap(middleware::Logger::default())
+            .wrap(cors)
             .service(web::scope(&root)
                 .service(get_accounts)
                 .service(post_login)
