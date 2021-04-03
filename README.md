@@ -85,14 +85,11 @@ Returns this to you
 ```json
 {
    "name":"yourname",
-   "email":"email@mail.ee",
-   "password": "$argon2id$v=19$m=65536,t=2,p=1$48hSHQ11RoNqOCRNlSAfUw$u8gAZd/JDGNcQNYejsDgPGXvCU0SlVRPuTo3zXzU3KU"
+   "email":"email@mail.ee"
 }
 ```
 
-It is not good pratice to return the password hash like this.
-This sample is just built for fun, and learning.
-
+It is not good pratice to return the password hash.
 
 ## Login
 
