@@ -1,8 +1,7 @@
-import axios from "axios";
 import useSWR from "swr";
 
 export const apiRoot: string = process.env.REACT_APP_BACKEND_ENDPOINT || "http://localhost:8080/api"
-
+/*
 const REGISTER_URL: string = '/api/auth/register';
 const LOGIN_URL: string = '/api/auth/login';
 
@@ -12,10 +11,10 @@ const BEARER:string = "Bearer ";
 const APPLICATIONJSON:string = "application/json"
 const CONTENTTYPE:string = "Content-Type"
 
-
+*/
 export const fetcher = (url:string) => fetch(`${apiRoot}${url}`)
    .then(res => res.json);
-
+/*
 const poster = (url:string, content:string) => fetch(`${apiRoot}${url}`, {
       method: "POST",
       headers: {
@@ -50,7 +49,7 @@ export function useCreateAccount (content: string) {
    }
 
 }
-
+*/
 /*
 export function useLogin (content: string) {
    const { data, error } = useSWR<LoggedIn>([`/api/auth/login`, content] , poster);

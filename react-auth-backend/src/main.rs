@@ -15,7 +15,7 @@ struct AppState {
     accounts: Mutex<Vec<Account>>,
 }
 
-#[derive(Serialize, Clone)]
+#[derive(Serialize,Deserialize, Debug,Clone)]
 struct Account {
     name: String,
     email: String,
@@ -28,20 +28,20 @@ impl fmt::Display for Account {
     }
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize,Deserialize)]
 struct LoginRequest {
     email: String,
     password: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
 struct ReqisterRequest {
     name: String,
     email: String,
     password: String,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize,Deserialize, Debug)]
 struct LoginResponse {
     token: String,
 }
@@ -91,7 +91,9 @@ async fn post_register(state: web::Data<AppState>, data: web::Json<ReqisterReque
     };
 
     accounts.push(newaccount.clone());
+    println!("{}",&newaccount);
     HttpResponse::Ok().json(&newaccount)
+
 }
 
 #[get("/accounts/")]
@@ -182,8 +184,11 @@ fn create_jwt(user: &str) -> Option<String> {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use crate::{hash, verify, create_jwt, Claims, JWT_SECRET};
     use jsonwebtoken::{DecodingKey, Validation, Algorithm, decode};
+    use actix_web::{test};
+    use serde_json::json;
 
     #[test]
     fn create_password_and_verify() {
@@ -209,5 +214,142 @@ mod tests {
         );
 
         assert_eq!(email, decoded.unwrap().claims.sub);
+    }
+
+    #[actix_rt::test]
+    async fn test_register_user() {
+        let name = "Kenneth";
+        let mail = "kenneth@kenneth.no";
+        let password = "superpassword";
+
+        let registeruser = ReqisterRequest {
+            name: name.to_string(),
+            email: mail.to_string(),
+            password: password.to_string(),
+        };
+
+        let inital_state = web::Data::new(
+            AppState {
+                accounts: Mutex::new(Vec::new()),
+            }
+        );
+        let mut app = test::init_service(
+            App::new()
+                .app_data(inital_state.clone())
+                .service(web::scope("/api")
+                    .service(post_register))).await;
+
+        let jsonreq = json!(registeruser);
+
+        let resp = test::TestRequest::post()
+            .uri("/api/auth/register")
+            .set_json(&jsonreq)
+            .send_request(&mut app).await;
+        assert!(resp.status().is_success(), "Failed to create user");
+        let a: Account = test::read_body_json(resp).await;
+
+        assert_eq!(a.name, name);
+        assert_eq!(a.email, mail);
+        assert_eq!(verify(a.password.as_str(), password), true);
+    }
+
+    #[actix_rt::test]
+    async fn test_login_user() {
+        let name = "Kenneth";
+        let mail = "kenneth@kenneth.no";
+        let password = "superpassword";
+
+        let registeruser = ReqisterRequest {
+            name: name.to_string(),
+            email: mail.to_string(),
+            password: password.to_string(),
+        };
+
+        let inital_state = web::Data::new(
+            AppState {
+                accounts: Mutex::new(Vec::new()),
+            }
+        );
+        let mut app = test::init_service(
+            App::new()
+                .app_data(inital_state.clone())
+                .service(web::scope("/api")
+                    .service(post_register)
+                    .service(post_login))
+        ).await;
+
+        let jsonreq = json!(registeruser);
+
+        let resp = test::TestRequest::post()
+            .uri("/api/auth/register")
+            .set_json(&jsonreq)
+            .send_request(&mut app).await;
+        assert!(resp.status().is_success(), "Failed to create user");
+        let a: Account = test::read_body_json(resp).await;
+
+        assert!(!a.name.is_empty());
+        assert!(!a.email.is_empty());
+        assert!(!a.password.is_empty());
+
+        let loginreq = json!(LoginRequest {
+            email: registeruser.email,
+            password: registeruser.password,
+        });
+
+        let login = test::TestRequest::post()
+            .uri("/api/auth/login")
+            .set_json(&loginreq)
+            .send_request(&mut app).await;
+
+        assert!(login.status().is_success(), "Failed to login");
+        let l:LoginResponse = test::read_body_json(login).await;
+        assert_eq!(l.token, create_jwt(&mail).unwrap());
+    }
+
+
+    #[actix_rt::test]
+    async fn test_login_failed_user() {
+        let name = "Kenneth";
+        let mail = "kenneth@kenneth.no";
+        let password = "superpassword";
+
+        let registeruser = ReqisterRequest {
+            name: name.to_string(),
+            email: mail.to_string(),
+            password: password.to_string(),
+        };
+
+        let inital_state = web::Data::new(
+            AppState {
+                accounts: Mutex::new(Vec::new()),
+            }
+        );
+        let mut app = test::init_service(
+            App::new()
+                .app_data(inital_state.clone())
+                .service(web::scope("/api")
+                    .service(post_register)
+                    .service(post_login))
+        ).await;
+
+        let jsonreq = json!(registeruser);
+
+        let resp = test::TestRequest::post()
+            .uri("/api/auth/register")
+            .set_json(&jsonreq)
+            .send_request(&mut app).await;
+        assert!(resp.status().is_success(), "Failed to create user");
+
+        let loginreq = json!(LoginRequest {
+            email: registeruser.email,
+            password: "whatismypassword".to_string(),
+        });
+
+        let login = test::TestRequest::post()
+            .uri("/api/auth/login")
+            .set_json(&loginreq)
+            .send_request(&mut app).await;
+
+        assert!(login.status().is_client_error(), "Managed to login");
     }
 }
