@@ -1,0 +1,22 @@
+version : '3.7'
+
+services:
+   react-auth-frontend:
+      build:
+         context: react-auth-frontend
+         dockerfile: Dockerfile
+      depends_on:
+         - react-auth-backend
+         
+   react-auth-backend:
+      build:
+         context: react-auth-backend
+         dockerfile: Dockerfile
+      healthcheck:
+         test: curl --fail -s http://localhost:8080/ || exit 1
+         timeout: 45s
+         interval: 10s
+         retries: 10
+      ports:
+         - 8080:8080
+   
