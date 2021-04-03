@@ -3,6 +3,10 @@
  [![React-Auth-Backend CI](https://github.com/spydx/react-auth-sample/actions/workflows/react-auth-backend.yml/badge.svg)](https://github.com/spydx/react-auth-sample/actions/workflows/react-auth-backend.yml)
 [![React-Auth-Frontend CI](https://github.com/spydx/react-auth-sample/actions/workflows/react-auth-frontend.yml/badge.svg)](https://github.com/spydx/react-auth-sample/actions/workflows/react-auth-frontend.yml)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=spydx_react-auth-sample&metric=alert_status)](https://sonarcloud.io/dashboard?id=spydx_react-auth-sample)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=spydx_react-auth-sample&metric=code_smells)](https://sonarcloud.io/dashboard?id=spydx_react-auth-sample)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=spydx_react-auth-sample&metric=bugs)](https://sonarcloud.io/dashboard?id=spydx_react-auth-sample)
+
 Small sample project with React frontend and a simple Rust backend.
 
 ## Running the sample
