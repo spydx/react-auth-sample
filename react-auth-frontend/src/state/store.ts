@@ -20,11 +20,12 @@ const saveState = (state: CombinedState<AuthState>) => {
       } else {
          localStorage.setItem('authtoken', state.token)
       }
-         
+
    } catch (error) {
       
    }
 }
+
 store.subscribe( () => {
    saveState(store.getState().auth);
 })

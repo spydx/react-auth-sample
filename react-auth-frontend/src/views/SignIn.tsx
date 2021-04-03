@@ -6,19 +6,32 @@ import {
    Paper,
    makeStyles,
    CssBaseline,
-   Typography
+   Typography,
+   Box
 } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
 import { useForm} from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-
-import { loginSuccess } from '../state/reducers/Auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginSuccess, loginError } from '../state/reducers/Auth';
+import { registerAccount, showRegisterView} from '../state/reducers/Account';
+import { RootState } from '../state/rootReducer';
 
 type LoginProps = {
    username: string
    password: string
 }
 
+export type LoggedIn = {
+   token: string,
+   tokenType: string, 
+   profile: string,
+}
+
+export type RegisterAccount = {
+   name: string,
+   email: string,
+   password: string,
+}
 
 const useStyles = makeStyles((theme) => ({
    paper: {
@@ -38,16 +51,19 @@ const useStyles = makeStyles((theme) => ({
      marginTop: theme.spacing(1)
    },
    submit: {
-     margin: theme.spacing(3,0,2),
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1)
    }
  
  }));
+
 
 export const SignIn = () => {
    const classes = useStyles();
    const { register, handleSubmit } = useForm<LoginProps>();
    const dispatch = useDispatch();
-
+   const account = useSelector((state: RootState) => state.account)
+   const auth = useSelector((state: RootState) => state.auth)
    
    const onSubmit = async (login: LoginProps) => {
       const response = await fetch('http://localhost:8080/api/auth/login', {
@@ -55,14 +71,36 @@ export const SignIn = () => {
         headers: {'content-type': 'application/json'},
         body: JSON.stringify(login)
       })
-
+      if(response.status !== 200) {
+         console.log("triggede");
+         dispatch(loginError(true));
+         return
+      }
       const data = await response.json()
+      
       
       if(data?.token) {
          dispatch(loginSuccess(data.token));
+      } 
+      
+      
+   }
+
+   const onRegister = async(register: RegisterAccount ) => {
+      const response = await fetch('http://localhost:8080/api/auth/register', {
+         method: 'POST',
+         headers: { 'Content-type': 'application/json'},
+         body: JSON.stringify(register)
+      })
+      const data = await response.json()
+      if(data?.email && data?.name) { 
+         dispatch(registerAccount(register))
       }
    }
 
+   const showRegistering = () => {
+      dispatch(showRegisterView(true))
+   }
 
 
    return(
@@ -75,9 +113,19 @@ export const SignIn = () => {
                <LockOutlined />
             </Avatar>
             <Typography component="h1" variant="h5">
-               Sign In
+              { account.registered ?  "Sign In" : "Register" }
             </Typography>
-            <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
+            <form className={classes.form} noValidate onSubmit={account.registered ? handleSubmit(onSubmit) : handleSubmit(onRegister)}>
+               {account.registered ? null : <TextField 
+                  margin="normal"
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="name"
+                  name="name"
+                  label="Name"
+                  inputRef={register({required: "Must have name field"})}
+                  /> }
                <TextField 
                   margin="normal"
                   variant="outlined"
@@ -100,16 +148,35 @@ export const SignIn = () => {
                   label="Password"
                   inputRef={register({required: "Must have password field"})}
                   />
-               <Button 
+               { account.registered ? <Button 
                   type="submit"
                   fullWidth
                   variant="contained"
                   color="primary"
                   className={classes.submit}
-               >Sign in</Button>
+               >Sign in</Button> : null }
+               { account.registered ? <Button 
+                  onClick={() => showRegistering()}
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  > Register </Button> : 
+                  <Button 
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  > Register </Button>
+               }
             </form>
          </div>
+         { auth.error ? <Box bgcolor="error.main" p={2}><Typography component="h1" variant="h5" >
+              Something went wrong, try again
+         </Typography></Box>: null }
          </Paper>
       </Container>
    );
 }
+
