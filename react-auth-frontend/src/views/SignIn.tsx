@@ -86,15 +86,15 @@ export const SignIn = () => {
       
    }
 
-   const onRegister = async(register: RegisterAccount ) => {
+   const onRegister = async(reg: RegisterAccount ) => {
       const response = await fetch('http://localhost:8080/api/auth/register', {
          method: 'POST',
          headers: { 'Content-type': 'application/json'},
-         body: JSON.stringify(register)
+         body: JSON.stringify(RegExp)
       })
       const data = await response.json()
       if(data?.email && data?.name) { 
-         dispatch(registerAccount(register))
+         dispatch(registerAccount(reg))
       }
    }
 

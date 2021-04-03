@@ -1,6 +1,5 @@
-import { CombinedState, configureStore } from "@reduxjs/toolkit";
+import { CombinedState, configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { rootReducer} from './rootReducer';
-import { getDefaultMiddleware } from "@reduxjs/toolkit";
 import logger from 'redux-logger';
 import {AuthState } from '../state/reducers/Auth';
 
