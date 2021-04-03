@@ -1,7 +1,7 @@
 import axios from "axios";
 import useSWR from "swr";
 
-const apiRoot: string = process.env.REACT_APP_BACKEND_ENDPOINT || "http://localhost:8080/api"
+export const apiRoot: string = process.env.REACT_APP_BACKEND_ENDPOINT || "http://localhost:8080/api"
 
 const REGISTER_URL: string = '/api/auth/register';
 const LOGIN_URL: string = '/api/auth/login';
