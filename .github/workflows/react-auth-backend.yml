@@ -1,4 +1,4 @@
-name: Rust
+name: React-Auth-Backend CI
 
 on:
   push:

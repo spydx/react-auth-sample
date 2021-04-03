@@ -7,7 +7,8 @@ services:
          dockerfile: Dockerfile
       depends_on:
          - react-auth-backend
-         
+      ports:
+         - 80:80
    react-auth-backend:
       build:
          context: react-auth-backend
