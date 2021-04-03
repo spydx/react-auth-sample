@@ -67,7 +67,7 @@ async fn post_login(state: web::Data<AppState>, data: web::Json<LoginRequest>) -
                 HttpResponse::Unauthorized().body("Unauthorized account")
             } else {
                 let jwt = create_jwt(&data.email);
-                let tokenresponse = LoginResponse { token: jwt.unwrap() };
+                let tokenresponse = LoginResponse { token: jwt };
                 HttpResponse::Ok().json(tokenresponse)
             }
         },
@@ -111,7 +111,7 @@ async fn main() -> std::io::Result<()> {
     println!("Hello, world!");
 
     let root = "/api";
-    let binding = "127.0.0.1:8080";
+    let binding = "0.0.0.0:8080";
 
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
@@ -164,7 +164,7 @@ fn verify(hash: &str, password: &str) -> bool {
     }
 }
 
-fn create_jwt(user: &str) -> Option<String> {
+fn create_jwt(user: &str) -> String {
     let expire = Utc::now()
         .checked_add_signed(chrono::Duration::seconds(60))
         .expect("valid timestamp")
@@ -176,8 +176,7 @@ fn create_jwt(user: &str) -> Option<String> {
     };
 
     let header = Header::new(Algorithm::HS512);
-    let jwt = encode(&header, &claims , &EncodingKey::from_secret(JWT_SECRET)).unwrap();
-    Option::Some(jwt)
+    encode(&header, &claims , &EncodingKey::from_secret(JWT_SECRET)).unwrap()
 }
 
 
@@ -205,7 +204,7 @@ mod tests {
     #[test]
     fn create_jwt_token_and_decode_it() {
         let email = "cool@emial.com";
-        let jwt = create_jwt(&email).unwrap();
+        let jwt = create_jwt(&email);
 
         let decoded = decode::<Claims>(
             &jwt,
@@ -303,7 +302,7 @@ mod tests {
 
         assert!(login.status().is_success(), "Failed to login");
         let l:LoginResponse = test::read_body_json(login).await;
-        assert_eq!(l.token, create_jwt(&mail).unwrap());
+        assert_eq!(l.token, create_jwt(&mail));
     }
 
 
