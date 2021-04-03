@@ -74,7 +74,10 @@ Takes in a JSON message constructed like this:
 Example:
 
 ```sh
-$ curl http://localhost:8080/api/auth/register -H "Content-type:application/json" -d "{ \"name\":\"yourname\", \"email\":\"email@mail.ee\", \"password\": \"password\" }"
+$ curl http://localhost:8080/api/auth/register \\
+   -H "Content-type:application/json" \\
+   -d "{ \"name\":\"yourname\", \"email\":\"email@mail.ee\", 
+   \"password\": \"password\" }"
 ```
 
 Returns this to you
@@ -105,7 +108,9 @@ Takes in a JSON message constructed like this:
 Example:
 
 ```sh
-$ curl http://localhost:8080/api/auth/login -H "Content-type:application/json"  -d "{ \"email\":\"email@mail.ee\", \"password\": \"password\" }"
+$ curl http://localhost:8080/api/auth/login \\
+   -H "Content-type:application/json" \\
+   -d "{ \"email\":\"email@mail.ee\", \"password\": \"password\" }"
 ```
 
 That returns this content to you:
