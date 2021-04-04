@@ -68,7 +68,6 @@ export const ReactLogo = () => {
             Logout
           </Button>
        </form>
-       
      </header>
    </div>
      </Paper>

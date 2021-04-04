@@ -1,6 +1,6 @@
 
-import App from './App';
-import {store} from './state/store';
+import App from '../App';
+import {store} from '../state/store';
 import { Provider } from 'react-redux';
 import { create} from 'react-test-renderer';
 

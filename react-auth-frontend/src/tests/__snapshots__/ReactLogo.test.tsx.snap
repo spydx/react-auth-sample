@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`A snapshot test of ReactLogo Render ReactLogo 1`] = `
+<main
+  className="MuiContainer-root MuiContainer-maxWidthXs"
+>
+  <div
+    className="MuiPaper-root makeStyles-paper-1 MuiPaper-elevation1 MuiPaper-rounded"
+  >
+    <div
+      className="makeStyles-paper-1"
+    >
+      <h1
+        className="MuiTypography-root MuiTypography-h5"
+      >
+        Logged in
+      </h1>
+      <header
+        className="App-header"
+      >
+        <img
+          alt="logo"
+          className="App-logo"
+          src="logo.svg"
+        />
+        <p />
+        <form
+          className="makeStyles-form-3"
+          onSubmit={[Function]}
+        >
+          <button
+            className="MuiButtonBase-root MuiButton-root MuiButton-contained makeStyles-submit-4 MuiButton-containedPrimary MuiButton-fullWidth"
+            disabled={false}
+            onBlur={[Function]}
+            onDragLeave={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            onMouseDown={[Function]}
+            onMouseLeave={[Function]}
+            onMouseUp={[Function]}
+            onTouchEnd={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+            tabIndex={0}
+            type="submit"
+          >
+            <span
+              className="MuiButton-label"
+            >
+              Logout
+            </span>
+          </button>
+        </form>
+      </header>
+    </div>
+  </div>
+</main>
+`;
