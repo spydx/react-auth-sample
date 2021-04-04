@@ -1,12 +1,21 @@
 version : '3.7'
 
 services:
+   cypress:
+      image: "cypress/included:6.8.0"
+      depends_on:
+         - react-auth-frontend
+      environment:
+         - CYPRESS_baseUrl=http://react-auth-frontend/
+      working_dir: /e2e
+      volumes:
+         - ./e2e:/e2e/
    react-auth-frontend:
       build:
          context: react-auth-frontend
          dockerfile: Dockerfile
-      environment: 
-         - REACT_APP_BACKEND_ENDPOINT=http://react-auth-backend:8080/api
+         args:
+            REACT_APP_BACKEND_ENDPOINT: http://react-auth-backend:8080/api
       depends_on:
          - react-auth-backend
       ports:
