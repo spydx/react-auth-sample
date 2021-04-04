@@ -9,6 +9,16 @@
 
 Small sample project with React frontend and a simple Rust backend.
 
+## Goals of this project
+
+- Write a Rust API with [Actix.rs](https://actix.rs)
+- Write Rust Tests for the API
+- Create a simple React app in TypeScript that has a Sign In / Register and Sign out 
+- Write React tests with Jest
+- Use integration tests [Cypress](https://cypress.io)
+- Use [Docker](https://docker.com) to perform local integration tests
+- Use GitHub Actions to automate testing
+
 ## Running the sample
 
 It is several ways to run this project.
@@ -37,6 +47,24 @@ react-auth-frontend $ yarn start
 ```
 
 Then open your favorite browser to [react-auth-sample](http://localhost:80)
+
+## Running Integration Tests
+
+To run the interactive integration tests in Cypress do the following:
+
+```sh
+$ docker-compose -d up
+$ cd e2e/
+$ yarn install
+$ export "CYPRESS_baseUrl=http://localhost/"
+$ ./nodes_modules/.bin/cypress open
+```
+
+To run the integration tests via docker:
+
+```sh
+$ docker-compose -f docker-compose.test.yml up --exit-code-from cypress
+```
 
 ## Documentation
 
