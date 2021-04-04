@@ -2,13 +2,10 @@ name: Docker Integration Tests
 
 on:
   push:
-    # Publish `main` as Docker `latest` image.
-    branches:
-      - main
-
-env:
-  # TODO: Change variable to your image's name.
-  IMAGE_NAME: image
+    paths:
+     - e2e/**
+     - react-auth-backend/**
+     - react-auth-frontend/**
 
 jobs:
   # Run tests.
