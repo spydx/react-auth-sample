@@ -3,9 +3,11 @@ name: Docker Integration Tests
 on:
   push:
     paths:
-     - e2e/**
-     - react-auth-backend/**
-     - react-auth-frontend/**
+    - docker-compose.yml
+    - docker-compose.test.yml  
+    - e2e/**
+    - react-auth-backend/**
+    - react-auth-frontend/**
 
 jobs:
   # Run tests.
