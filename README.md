@@ -97,6 +97,7 @@ It's configured to allow all headers, origins and methods.
 Not recommended, but will suffice for our test environment here.
 
 There is no option to delete users.
+
 ### Register
 
 Takes in a JSON message constructed like this:
@@ -156,9 +157,13 @@ That returns this content to you:
 }
 ````
 
+## Resources
 
-
-
-
-
-
+[End-to-End Testing Web Apps: The Painless Way](https://mtlynch.io/painless-web-app-testing/)
+[mtlynch/hello-world-cypress](https://github.com/mtlynch/hello-world-cypress/)
+[Cypress.io](https://cypress.io)
+[Rust](https://rust-lang.org)
+[Rust Book](https://doc.rust-lang.org/book/)
+[Actix Web Framwork](https://actix.rs)
+[Docker](https://docker.com)
+[Docker Crash Course](https://github.com/spydx/docker-crashcourse)
