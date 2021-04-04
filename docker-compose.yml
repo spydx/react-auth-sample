@@ -5,8 +5,6 @@ services:
       build:
          context: react-auth-frontend
          dockerfile: Dockerfile
-      environment: 
-         - REACT_APP_BACKEND_ENDPOINT=http://react-auth-backend:8080/api
       depends_on:
          - react-auth-backend
       ports:
