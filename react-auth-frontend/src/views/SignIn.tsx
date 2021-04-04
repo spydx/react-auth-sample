@@ -90,7 +90,7 @@ export const SignIn = () => {
       const response = await fetch('http://localhost:8080/api/auth/register', {
          method: 'POST',
          headers: { 'Content-type': 'application/json'},
-         body: JSON.stringify(RegExp)
+         body: JSON.stringify(reg)
       })
       const data = await response.json()
       if(data?.email && data?.name) { 
