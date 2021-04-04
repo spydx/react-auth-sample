@@ -2,6 +2,7 @@
 
  [![React-Auth-Backend CI](https://github.com/spydx/react-auth-sample/actions/workflows/react-auth-backend.yml/badge.svg)](https://github.com/spydx/react-auth-sample/actions/workflows/react-auth-backend.yml)
 [![React-Auth-Frontend CI](https://github.com/spydx/react-auth-sample/actions/workflows/react-auth-frontend.yml/badge.svg)](https://github.com/spydx/react-auth-sample/actions/workflows/react-auth-frontend.yml)
+[![Docker Integration Tests](https://github.com/spydx/react-auth-sample/actions/workflows/docker-integration-tests.yml/badge.svg)](https://github.com/spydx/react-auth-sample/actions/workflows/docker-integration-tests.yml)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=spydx_react-auth-sample&metric=alert_status)](https://sonarcloud.io/dashboard?id=spydx_react-auth-sample)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=spydx_react-auth-sample&metric=code_smells)](https://sonarcloud.io/dashboard?id=spydx_react-auth-sample)
@@ -67,8 +68,7 @@ $ docker-compose -f docker-compose.test.yml up --exit-code-from cypress
 ```
 
 Example video
-
-[![Integration test video](/e2e/videos/preview.png)](https://user-images.githubusercontent.com/16806653/113511926-9095c480-9562-11eb-8527-890c74682165.mp4)
+[![Integration test video](/e2e/cypress/videos/preview.png)](https://user-images.githubusercontent.com/16806653/113511926-9095c480-9562-11eb-8527-890c74682165.mp4)
 
 
 
