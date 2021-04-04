@@ -4,7 +4,7 @@ use crate::structs::{AppState, LoginRequest, LoginResponse, RegisterRequest, Acc
 
 #[post("/auth/login")]
 pub async fn post_login(state: web::Data<AppState>, data: web::Json<LoginRequest>) -> impl Responder {
-    format!("Hello from login: {}: {}", data.email, data.password);
+    println!("Hello from login: {}: {}", data.email, data.password);
     let accounts = state.accounts.lock().unwrap();
 
     let found = accounts.iter()
