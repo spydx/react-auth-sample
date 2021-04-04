@@ -15,10 +15,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess, loginError } from '../state/reducers/Auth';
 import { registerAccount, showRegisterView} from '../state/reducers/Account';
 import { RootState } from '../state/rootReducer';
-import { apiRoot } from '../services/api';
+import { poster, LOGIN_PATH, REGISTER_PATH } from '../services/api';
 
 type LoginProps = {
-   username: string
+   email: string
    password: string
 }
 
@@ -59,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
  }));
 
 
+
 export const SignIn = () => {
    const classes = useStyles();
    const { register, handleSubmit } = useForm<LoginProps>();
@@ -67,18 +68,12 @@ export const SignIn = () => {
    const auth = useSelector((state: RootState) => state.auth)
    
    const onSubmit = async (login: LoginProps) => {
-      const response = await fetch(apiRoot + '/auth/login', {
-        method: 'POST',
-        headers: {'content-type': 'application/json'},
-        body: JSON.stringify(login)
-      })
+      const response = await poster(LOGIN_PATH, JSON.stringify(login));
       if(response.status !== 200) {
-         console.log("triggede");
          dispatch(loginError(true));
          return
       }
       const data = await response.json()
-      
       
       if(data?.token) {
          dispatch(loginSuccess(data.token));
@@ -86,11 +81,7 @@ export const SignIn = () => {
    }
 
    const onRegister = async(reg: RegisterAccount ) => {
-      const response = await fetch(apiRoot + '/auth/register', {
-         method: 'POST',
-         headers: { 'Content-type': 'application/json'},
-         body: JSON.stringify(reg)
-      })
+      const response = await poster(REGISTER_PATH, JSON.stringify(reg));
       const data = await response.json()
       if(data?.email && data?.name) { 
          dispatch(registerAccount(reg))
@@ -100,7 +91,6 @@ export const SignIn = () => {
    const showRegistering = () => {
       dispatch(showRegisterView(true))
    }
-
 
    return(
       <Container component="main" maxWidth="xs">

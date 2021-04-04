@@ -1,14 +1,16 @@
-export const apiRoot: string = process.env.REACT_APP_BACKEND_ENDPOINT || "http://localhost:8080/api"
-/*
-const REGISTER_URL: string = '/api/auth/register';
-const LOGIN_URL: string = '/api/auth/login';
+export const apiRoot: string = process.env.REACT_APP_BACKEND_ENDPOINT 
+                  || "http://localhost:8080/api"
+export const LOGIN_PATH = '/auth/login' ;
+export const REGISTER_PATH = '/auth/register'
 
-const AUTHORIZATION:string = "Authorization";
-const BEARER:string = "Bearer ";
+const POST_METHOD:string = 'POST';
+const APPLICATIONJSON:string = "application/json";
 
-const APPLICATIONJSON:string = "application/json"
-const CONTENTTYPE:string = "Content-Type"
-
-*/
 export const fetcher = (url:string) => fetch(`${apiRoot}${url}`)
    .then(res => res.json);
+
+export const poster = (url:string, data: string) => fetch(`${apiRoot}${url}`, {
+      method: POST_METHOD,
+      headers: { "Content-Type": APPLICATIONJSON},
+      body: data
+   });
