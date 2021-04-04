@@ -68,7 +68,7 @@ $ docker-compose -f docker-compose.test.yml up --exit-code-from cypress
 
 Example video
 
-[![Integration test video](/e2e/video/preview.png)](https://user-images.githubusercontent.com/16806653/113511926-9095c480-9562-11eb-8527-890c74682165.mp4)
+[![Integration test video](/e2e/videos/preview.png)](https://user-images.githubusercontent.com/16806653/113511926-9095c480-9562-11eb-8527-890c74682165.mp4)
 
 
 
