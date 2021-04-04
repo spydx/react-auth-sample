@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess, loginError } from '../state/reducers/Auth';
 import { registerAccount, showRegisterView} from '../state/reducers/Account';
 import { RootState } from '../state/rootReducer';
+import { apiRoot } from '../services/api';
 
 type LoginProps = {
    username: string
@@ -66,7 +67,7 @@ export const SignIn = () => {
    const auth = useSelector((state: RootState) => state.auth)
    
    const onSubmit = async (login: LoginProps) => {
-      const response = await fetch('http://localhost:8080/api/auth/login', {
+      const response = await fetch(apiRoot + '/auth/login', {
         method: 'POST',
         headers: {'content-type': 'application/json'},
         body: JSON.stringify(login)
@@ -81,13 +82,11 @@ export const SignIn = () => {
       
       if(data?.token) {
          dispatch(loginSuccess(data.token));
-      } 
-      
-      
+      }    
    }
 
    const onRegister = async(reg: RegisterAccount ) => {
-      const response = await fetch('http://localhost:8080/api/auth/register', {
+      const response = await fetch(apiRoot + '/auth/register', {
          method: 'POST',
          headers: { 'Content-type': 'application/json'},
          body: JSON.stringify(reg)
@@ -105,7 +104,6 @@ export const SignIn = () => {
 
    return(
       <Container component="main" maxWidth="xs">
-         
          <CssBaseline />
          <Paper className={classes.paper}>
          <div className={classes.paper}>
