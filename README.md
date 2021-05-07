@@ -20,6 +20,9 @@ Small sample project with React frontend and a simple Rust backend.
 - Use [Docker](https://docker.com) to perform local integration tests
 - Use GitHub Actions to automate testing
 
+WARNING: This authentication flow is called [implicit flow](https://oauth.net/2/grant-types/implicit/) in OAuth2.0 world and is not recommended to use.
+Recommended flow is [Autorization Code Grant Flow](https://oauth.net/2/grant-types/authorization-code/).
+
 ## Running the sample
 
 It is several ways to run this project.
