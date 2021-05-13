@@ -2,13 +2,12 @@ mod controllers;
 mod hashing;
 mod structs;
 
-use actix_web::{middleware,  web, App,  HttpServer};
+use actix_web::{middleware, web, App, HttpServer};
 
+use crate::controllers::{get_accounts, post_login, post_register};
+use crate::structs::AppState;
 use actix_cors::Cors;
 use std::sync::Mutex;
-use crate::controllers::{get_accounts, post_login, post_register};
-use crate::structs::{AppState};
-
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -19,11 +18,9 @@ async fn main() -> std::io::Result<()> {
 
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
-    let inital_state = web::Data::new(
-        AppState {
-            accounts: Mutex::new(Vec::new()),
-        }
-    );
+    let inital_state = web::Data::new(AppState {
+        accounts: Mutex::new(Vec::new()),
+    });
 
     HttpServer::new(move || {
         let cors = Cors::default()
@@ -35,10 +32,12 @@ async fn main() -> std::io::Result<()> {
             .app_data(inital_state.clone())
             .wrap(middleware::Logger::default())
             .wrap(cors)
-            .service(web::scope(&root)
-                .service(get_accounts)
-                .service(post_login)
-                .service(post_register))
+            .service(
+                web::scope(&root)
+                    .service(get_accounts)
+                    .service(post_login)
+                    .service(post_register),
+            )
     })
     .bind(&binding)?
     .run()

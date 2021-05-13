@@ -1,13 +1,13 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
+use std::fmt;
 use std::sync::Mutex;
-use std::{fmt};
 
 #[derive(Serialize)]
 pub struct AppState {
     pub accounts: Mutex<Vec<Account>>,
 }
 
-#[derive(Serialize,Deserialize, Debug,Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Account {
     pub name: String,
     pub email: String,
@@ -15,7 +15,7 @@ pub struct Account {
     pub password: String,
 }
 
-#[derive(Serialize,Deserialize, Debug,Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct AccountDTO {
     pub name: String,
     pub email: String,
@@ -23,11 +23,15 @@ pub struct AccountDTO {
 
 impl fmt::Display for Account {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "(name: {}, email: {}, password: {})", self.name, self.email, self.password )
+        write!(
+            f,
+            "(name: {}, email: {}, password: {})",
+            self.name, self.email, self.password
+        )
     }
 }
 
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize, Deserialize)]
 pub struct LoginRequest {
     pub email: String,
     pub password: String,
@@ -40,7 +44,7 @@ pub struct RegisterRequest {
     pub password: String,
 }
 
-#[derive(Serialize,Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct LoginResponse {
     pub token: String,
 }
@@ -65,7 +69,7 @@ mod tests {
             .timestamp();
         let c = Claims {
             sub: mail.to_string(),
-            exp: expire as usize
+            exp: expire as usize,
         };
 
         assert_eq!(c.sub, mail);

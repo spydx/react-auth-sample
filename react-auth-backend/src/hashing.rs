@@ -1,7 +1,7 @@
-use sodiumoxide::crypto::pwhash::argon2id13;
-use jsonwebtoken::{ encode, Algorithm,  EncodingKey, Header};
+use crate::structs::Claims;
 use chrono::Utc;
-use crate::structs::{Claims};
+use jsonwebtoken::{encode, Algorithm, EncodingKey, Header};
+use sodiumoxide::crypto::pwhash::argon2id13;
 
 const JWT_SECRET: &[u8] = b"omgSOs3cret";
 
@@ -10,19 +10,22 @@ pub fn hash(password: &str) -> String {
     let hash = argon2id13::pwhash(
         password.as_bytes(),
         argon2id13::OPSLIMIT_INTERACTIVE,
-        argon2id13::MEMLIMIT_INTERACTIVE
-    ).unwrap();
+        argon2id13::MEMLIMIT_INTERACTIVE,
+    )
+    .unwrap();
 
     let texthash = std::str::from_utf8(&hash.0)
-        .unwrap().trim_end_matches('\u{0}').to_string();
+        .unwrap()
+        .trim_end_matches('\u{0}')
+        .to_string();
 
     texthash
 }
 
 pub fn verify(hash: &str, password: &str) -> bool {
     let mut paddedhash = [0u8; 128];
-    hash.as_bytes().iter().enumerate().for_each(|(i,value) | {
-        paddedhash[i] = value.clone();
+    hash.as_bytes().iter().enumerate().for_each(|(i, value)| {
+        paddedhash[i] = *value;
     });
 
     sodiumoxide::init().unwrap();
@@ -31,7 +34,6 @@ pub fn verify(hash: &str, password: &str) -> bool {
         _ => false,
     }
 }
-
 
 pub fn create_jwt(user: &str) -> String {
     let expire = Utc::now()
@@ -45,14 +47,14 @@ pub fn create_jwt(user: &str) -> String {
     };
 
     let header = Header::new(Algorithm::HS512);
-    encode(&header, &claims , &EncodingKey::from_secret(JWT_SECRET)).unwrap()
+    encode(&header, &claims, &EncodingKey::from_secret(JWT_SECRET)).unwrap()
 }
 
 #[cfg(test)]
 mod hashing_tests {
     use super::*;
     use crate::hashing::{hash, verify};
-    use jsonwebtoken::{DecodingKey, Validation, Algorithm, decode};
+    use jsonwebtoken::{decode, Algorithm, DecodingKey, Validation};
 
     #[test]
     fn create_password_and_verify() {
